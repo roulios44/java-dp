@@ -1,31 +1,27 @@
 package org.sebsy.strategy;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class DemoTri {
 
     public static void main(String[] args) {
-        Tri tri = new Tri();
-
-        System.out.println("Avec le Bubble Sort:");
-
         Integer[] array1 = {12, -5, 7, 0, 8, 4, -3, 9, 15};
-        tri.exec(1, array1);
-        List.of(array1).forEach(i -> System.out.print(i + " "));
-
-        System.out.println("\nAvec l'insertion Sort:");
-
         Integer[] array2 = {12, -5, 7, 0, 8, 4, -3, 9, 15};
-        tri.exec(2, array2);
-        List.of(array2).forEach(i -> System.out.print(i + " "));
-
-        System.out.println("\nAvec le selection Sort:");
-
         Integer[] array3 = {12, -5, 7, 0, 8, 4, -3, 9, 15};
-        tri.exec(3, array3);
-        List.of(array3).forEach(i -> System.out.print(i + " "));
 
+        Tri tri = new Tri(new BubbleSortStrategy());
+        System.out.println("Avec le Bubble Sort:");
+        tri.trier(array1);
+        Arrays.stream(array1).forEach(i -> System.out.print(i + " "));
 
+        tri.setStrategie(new InsertionSortStrategy());
+        System.out.println("\nAvec l'insertion Sort:");
+        tri.trier(array2);
+        Arrays.stream(array2).forEach(i -> System.out.print(i + " "));
+
+        tri.setStrategie(new SelectionSortStrategy());
+        System.out.println("\nAvec le selection Sort:");
+        tri.trier(array3);
+        Arrays.stream(array3).forEach(i -> System.out.print(i + " "));
     }
-
 }

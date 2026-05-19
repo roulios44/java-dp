@@ -2,44 +2,41 @@ package org.sebsy.strategy;
 
 public class Tri {
 
-    public void exec(int typeTri, Integer[] arr) {
+    private TriStrategy strategie;
 
-        // Bubble sort algorithm
-        if (typeTri == 1) {
-            int n = arr.length;
-            for (int i = 0; i < n - 1; i++) {
-                for (int j = 0; j < n - i - 1; j++) {
-                    if (arr[j] > arr[j + 1]) {
-                        int temp = arr[j];
-                        arr[j] = arr[j + 1];
-                        arr[j + 1] = temp;
-                    }
-                }
-            }
+    public Tri() {
+    }
+
+    public Tri(TriStrategy strategie) {
+        this.strategie = strategie;
+    }
+
+    public void setStrategie(TriStrategy strategie) {
+        this.strategie = strategie;
+    }
+
+    public void trier(Integer[] arr) {
+        if (strategie == null) {
+            throw new IllegalStateException("La stratégie de tri n'a pas été initialisée.");
         }
-        // insertion sort algorithm
-        else if (typeTri == 2) {
-            for (int k = 1; k < arr.length - 1; k++) {
-                int temp = arr[k];
-                int j = k - 1;
-                while (j >= 0 && temp <= arr[j]) {
-                    arr[j + 1] = arr[j];
-                    j = j - 1;
-                }
-                arr[j + 1] = temp;
-            }
-        } else if (typeTri == 3) {
-            for (int i = 0; i < arr.length - 1; i++) {
-                int index = i;
-                for (int j = i + 1; j < arr.length; j++) {
-                    if (arr[j] < arr[index]) {
-                        index = j;//searching for lowest index
-                    }
-                }
-                int smallerNumber = arr[index];
-                arr[index] = arr[i];
-                arr[i] = smallerNumber;
-            }
+        strategie.trier(arr);
+    }
+
+    public void exec(int typeTri, Integer[] arr) {
+        setStrategie(strategiePour(typeTri));
+        trier(arr);
+    }
+
+    private TriStrategy strategiePour(int typeTri) {
+        switch (typeTri) {
+            case 1:
+                return new BubbleSortStrategy();
+            case 2:
+                return new InsertionSortStrategy();
+            case 3:
+                return new SelectionSortStrategy();
+            default:
+                throw new IllegalArgumentException("Type de tri inconnu : " + typeTri);
         }
     }
 }

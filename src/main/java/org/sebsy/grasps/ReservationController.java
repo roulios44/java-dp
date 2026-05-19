@@ -8,6 +8,8 @@ import org.sebsy.grasps.beans.Reservation;
 import org.sebsy.grasps.beans.TypeReservation;
 import org.sebsy.grasps.daos.ClientDao;
 import org.sebsy.grasps.daos.TypeReservationDao;
+import org.sebsy.grasps.service.ReservationService;
+import org.sebsy.grasps.service.ReservationServiceImpl;
 
 /**
  * Controlleur qui prend en charge la gestion des réservations client
@@ -18,14 +20,16 @@ public class ReservationController {
 
     private final ClientDao clientDao;
     private final TypeReservationDao typeReservationDao;
+    private final ReservationService reservationService;
 
     public ReservationController() {
-        this(new ClientDao(), new TypeReservationDao());
+        this(new ClientDao(), new TypeReservationDao(), new ReservationServiceImpl());
     }
 
-    public ReservationController(ClientDao clientDao, TypeReservationDao typeReservationDao) {
+    public ReservationController(ClientDao clientDao, TypeReservationDao typeReservationDao, ReservationService reservationService) {
         this.clientDao = clientDao;
         this.typeReservationDao = typeReservationDao;
+        this.reservationService = reservationService;
     }
 
     /**
@@ -34,13 +38,13 @@ public class ReservationController {
      * @param params contient toutes les infos permettant de créer une réservation
      * @return Reservation
      */
-    public Reservation creerReservation(Params params) {
-        String identifiantClient = params.getIdentifiantClient();
-        LocalDateTime dateReservation = toDate(params.getDateReservation());
+    public Reservation creerReservation(ReservationRequest params) {
+        String identifiantClient = params.identifiantClient();
+        LocalDateTime dateReservation = toDate(params.dateReservation());
         Client client = clientDao.extraireClient(identifiantClient);
-        TypeReservation typeReservation = typeReservationDao.extraireTypeReservation(params.getTypeReservation());
+        TypeReservation typeReservation = typeReservationDao.extraireTypeReservation(params.typeReservation());
 
-        return client.creerReservation(dateReservation, params.getNbPlaces(), typeReservation);
+        return reservationService.creerReservation(client, dateReservation, params.nbPlaces(), typeReservation);
     }
 
     /**

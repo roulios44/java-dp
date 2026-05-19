@@ -1,6 +1,5 @@
 package org.sebsy.grasps.beans;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,21 +80,6 @@ public class Client {
      */
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
-    }
-
-    /**
-     * Crée une réservation pour ce client et met à jour l'association.
-     *
-     * @param date            date de la réservation
-     * @param nbPlaces        nombre de places réservées
-     * @param typeReservation type de réservation
-     * @return la réservation créée
-     */
-    public Reservation creerReservation(LocalDateTime date, int nbPlaces, TypeReservation typeReservation) {
-        Reservation reservation = new Reservation(date, this, nbPlaces);
-        reservation.calculerTotal(typeReservation);
-        addReservation(reservation);
-        return reservation;
     }
 
     public void addReservation(Reservation reservation) {

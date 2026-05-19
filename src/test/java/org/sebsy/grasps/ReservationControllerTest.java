@@ -1,8 +1,9 @@
 package org.sebsy.grasps;
 
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.sebsy.grasps.beans.Reservation;
+
+import junit.framework.TestCase;
 
 public class ReservationControllerTest extends TestCase {
 
@@ -14,11 +15,7 @@ public class ReservationControllerTest extends TestCase {
     @Test
     public void testCreerReservationTheatrePremium() {
 
-        Params params = new Params();
-        params.setDateReservation("20/11/2020 19:55:00");
-        params.setNbPlaces(3);
-        params.setIdentifiantClient("1");
-        params.setTypeReservation("TH"); // Théâtre
+        ReservationRequest params = new ReservationRequest("1", "20/11/2020 19:55:00", "TH", 3);
 
         ReservationController controller = new ReservationController();
         Reservation reservation = controller.creerReservation(params);
@@ -29,11 +26,7 @@ public class ReservationControllerTest extends TestCase {
     @Test
     public void testCreerReservationTheatreNonPremium() {
 
-        Params params = new Params();
-        params.setDateReservation("20/11/2020 19:55:00");
-        params.setNbPlaces(3);
-        params.setIdentifiantClient("3");
-        params.setTypeReservation("TH"); // Théâtre
+        ReservationRequest params = new ReservationRequest("3", "20/11/2020 19:55:00", "TH", 3);
 
         ReservationController controller = new ReservationController();
         Reservation reservation = controller.creerReservation(params);
@@ -44,11 +37,7 @@ public class ReservationControllerTest extends TestCase {
     @Test
     public void testCreerReservationCinemaPremium() {
 
-        Params params = new Params();
-        params.setDateReservation("21/11/2020 20:30:00");
-        params.setNbPlaces(4);
-        params.setIdentifiantClient("2");
-        params.setTypeReservation("CI"); // Théâtre
+        ReservationRequest params = new ReservationRequest("2", "21/11/2020 20:30:00", "CI", 4);
 
         ReservationController controller = new ReservationController();
         Reservation reservation = controller.creerReservation(params);
@@ -59,11 +48,7 @@ public class ReservationControllerTest extends TestCase {
     @Test
     public void testCreerReservationCinemaNonPremium() {
 
-        Params params = new Params();
-        params.setDateReservation("21/11/2020 20:30:00");
-        params.setNbPlaces(4);
-        params.setIdentifiantClient("3");
-        params.setTypeReservation("CI"); // Théâtre
+        ReservationRequest params = new ReservationRequest("3", "21/11/2020 20:30:00", "CI", 4);
 
         ReservationController controller = new ReservationController();
         Reservation reservation = controller.creerReservation(params);
