@@ -1,33 +1,32 @@
 package org.sebsy.grasps;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.sebsy.grasps.beans.Client;
 import org.sebsy.grasps.beans.Reservation;
 import org.sebsy.grasps.beans.TypeReservation;
 import org.sebsy.grasps.daos.ClientDao;
 import org.sebsy.grasps.daos.TypeReservationDao;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 /**
  * Controlleur qui prend en charge la gestion des réservations client
  */
 public class ReservationController {
 
-    /**
-     * formatter
-     */
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-    /**
-     * DAO permettant d'accéder à la table des clients
-     */
-    private ClientDao clientDao = new ClientDao();
+    private final ClientDao clientDao;
+    private final TypeReservationDao typeReservationDao;
 
-    /**
-     * DAO permettant d'accéder à la table des types de réservation
-     */
-    private TypeReservationDao typeReservationDao = new TypeReservationDao();
+    public ReservationController() {
+        this(new ClientDao(), new TypeReservationDao());
+    }
+
+    public ReservationController(ClientDao clientDao, TypeReservationDao typeReservationDao) {
+        this.clientDao = clientDao;
+        this.typeReservationDao = typeReservationDao;
+    }
 
     /**
      * Méthode qui créée une réservation pour un client à partir des informations transmises
@@ -36,40 +35,12 @@ public class ReservationController {
      * @return Reservation
      */
     public Reservation creerReservation(Params params) {
-
-        // 1) Récupération des infos provenant de la classe appelante
         String identifiantClient = params.getIdentifiantClient();
-        String dateReservationStr = params.getDateReservation();
-        String typeReservation = params.getTypeReservation();
-        int nbPlaces = params.getNbPlaces();
-
-        // 2) Conversion de la date de réservation en LocalDateTime
-        LocalDateTime dateReservation = toDate(dateReservationStr);
-
-        // 3) Extraction de la base de données des informations client
+        LocalDateTime dateReservation = toDate(params.getDateReservation());
         Client client = clientDao.extraireClient(identifiantClient);
+        TypeReservation typeReservation = typeReservationDao.extraireTypeReservation(params.getTypeReservation());
 
-        // 4) Extraction de la base de données des infos concernant le type de la réservation
-        TypeReservation type = typeReservationDao.extraireTypeReservation(typeReservation);
-
-        // 5) Création de la réservation
-        Reservation reservation = new Reservation(dateReservation);
-        reservation.setNbPlaces(nbPlaces);
-        reservation.setClient(client);
-
-        // 6) Ajout de la réservation au client
-        client.getReservations().add(reservation);
-
-        // 7) Calcul du montant total de la réservation qui dépend:
-        //    - du nombre de places
-        //    - de la réduction qui s'applique si le client est premium ou non
-        double total = type.getMontant() * nbPlaces;
-        if (client.isPremium()) {
-            reservation.setTotal(total * (1 - type.getReductionPourcent() / 100.0));
-        } else {
-            reservation.setTotal(total);
-        }
-        return reservation;
+        return client.creerReservation(dateReservation, params.getNbPlaces(), typeReservation);
     }
 
     /**
@@ -79,7 +50,6 @@ public class ReservationController {
      * @return LocalDateTime
      */
     private LocalDateTime toDate(String dateStr) {
-
-        return LocalDateTime.parse(dateStr, formatter);
+        return LocalDateTime.parse(dateStr, FORMATTER);
     }
 }

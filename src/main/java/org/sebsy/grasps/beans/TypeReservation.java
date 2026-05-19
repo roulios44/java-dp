@@ -41,6 +41,11 @@ public class TypeReservation {
         this.reductionPourcent = reductionPourcent;
     }
 
+    public double calculerTotal(int nbPlaces, boolean premium) {
+        double total = montant * nbPlaces;
+        return premium ? total * (1 - reductionPourcent / 100.0) : total;
+    }
+
     /**
      * Getter
      *

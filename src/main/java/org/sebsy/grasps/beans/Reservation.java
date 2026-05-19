@@ -1,10 +1,11 @@
 package org.sebsy.grasps.beans;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 
 @Entity
 public class Reservation {
@@ -29,6 +30,21 @@ public class Reservation {
     public Reservation(LocalDateTime date) {
         super();
         this.date = date;
+    }
+
+    public Reservation(LocalDateTime date, Client client, int nbPlaces) {
+        this.date = date;
+        this.client = client;
+        this.nbPlaces = nbPlaces;
+    }
+
+    /**
+     * Calcule le montant total de la réservation en utilisant les informations du type.
+     *
+     * @param typeReservation informations tarifaires de la réservation
+     */
+    public void calculerTotal(TypeReservation typeReservation) {
+        this.total = typeReservation.calculerTotal(nbPlaces, client != null && client.isPremium());
     }
 
     /**
