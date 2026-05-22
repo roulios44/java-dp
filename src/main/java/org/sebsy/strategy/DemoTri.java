@@ -9,19 +9,18 @@ public class DemoTri {
         Integer[] array2 = {12, -5, 7, 0, 8, 4, -3, 9, 15};
         Integer[] array3 = {12, -5, 7, 0, 8, 4, -3, 9, 15};
 
-        Tri tri = new Tri(new BubbleSortStrategy());
+        Tri tri = new Tri();
+
         System.out.println("Avec le Bubble Sort:");
-        tri.trier(array1);
+        tri.exec(SortType.BUBBLE, array1);
         Arrays.stream(array1).forEach(i -> System.out.print(i + " "));
 
-        tri.setStrategie(new InsertionSortStrategy());
-        System.out.println("\nAvec l'insertion Sort:");
-        tri.trier(array2);
+        System.out.println("\nAvec l'Insertion Sort:");
+        tri.exec(SortType.INSERTION, array2);
         Arrays.stream(array2).forEach(i -> System.out.print(i + " "));
 
-        tri.setStrategie(new SelectionSortStrategy());
-        System.out.println("\nAvec le selection Sort:");
-        tri.trier(array3);
+        System.out.println("\nAvec le Selection Sort:");
+        tri.exec(SortType.SELECTION, array3);
         Arrays.stream(array3).forEach(i -> System.out.print(i + " "));
     }
 }

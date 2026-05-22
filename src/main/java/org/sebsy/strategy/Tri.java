@@ -2,16 +2,16 @@ package org.sebsy.strategy;
 
 public class Tri {
 
-    private TriStrategy strategie;
+    private Strategy strategie;
 
     public Tri() {
     }
 
-    public Tri(TriStrategy strategie) {
+    public Tri(Strategy strategie) {
         this.strategie = strategie;
     }
 
-    public void setStrategie(TriStrategy strategie) {
+    public void setStrategie(Strategy strategie) {
         this.strategie = strategie;
     }
 
@@ -22,21 +22,8 @@ public class Tri {
         strategie.trier(arr);
     }
 
-    public void exec(int typeTri, Integer[] arr) {
-        setStrategie(strategiePour(typeTri));
+    public void exec(SortType typeTri, Integer[] arr) {
+        setStrategie(StrategyFactory.createStrategy(typeTri));
         trier(arr);
-    }
-
-    private TriStrategy strategiePour(int typeTri) {
-        switch (typeTri) {
-            case 1:
-                return new BubbleSortStrategy();
-            case 2:
-                return new InsertionSortStrategy();
-            case 3:
-                return new SelectionSortStrategy();
-            default:
-                throw new IllegalArgumentException("Type de tri inconnu : " + typeTri);
-        }
     }
 }

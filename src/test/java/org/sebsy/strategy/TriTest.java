@@ -41,7 +41,7 @@ public class TriTest extends TestCase {
         Integer[] arr = {12, -5, 7, 0, 8, 4, -3, 9, 15};
         Tri tri = new Tri();
 
-        tri.exec(1, arr);
+        tri.exec(SortType.BUBBLE, arr);
         assertSorted(arr);
     }
 

@@ -1,6 +1,6 @@
 package org.sebsy.strategy;
 
-public class SelectionSortStrategy implements TriStrategy {
+public class SelectionSortStrategy implements Strategy {
 
     @Override
     public void trier(Integer[] arr) {
