@@ -36,7 +36,7 @@ public class FactoryTest {
         assertNotNull(element);
         assertTrue(element instanceof Allergene);
         assertEquals("Arachide", element.getNom());
-        assertEquals(10.0, element.getValeur());
+        assertEquals(10.0, element.getValeur(), 0.0f);
         assertEquals(Unite.MICRO_GRAMMES, element.getUnite());
     }
 
@@ -52,7 +52,7 @@ public class FactoryTest {
         assertNotNull(element);
         assertTrue(element instanceof Additif);
         assertEquals("E300", element.getNom());
-        assertEquals(100.0, element.getValeur());
+        assertEquals(100.0, element.getValeur(), 0.0f);
         assertEquals(Unite.MILLI_GRAMMES, element.getUnite());
     }
 
